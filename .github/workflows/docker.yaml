@@ -1,0 +1,38 @@
+name: CI
+
+on: 
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        uses: actions/docker/cli@master
+        with:
+          fetch-depth: 1
+        args:
+          - build
+          - -t
+          - rkhozinov/terraform-landscape:$GITHUB_SHA
+          - .
+
+      - name: Docker login
+        uses: actions/docker/login@master
+        secrets: ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
+        with:
+          fetch-depth: 1
+        env:
+          #DOCKER_REGISTRY_URL : "docker.pkg.github.com"
+          DOCKER_REGISTRY_URL : "registry.hub.docker.com"
+
+      - name: Push
+        uses: actions/docker/cli@master
+        with:
+          fetch-depth: 1
+        args:
+          - push
+          - rkhozinov/terraform-landscape
