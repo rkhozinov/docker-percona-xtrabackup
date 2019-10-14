@@ -1,0 +1,45 @@
+FROM debian:10-slim 
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get -y install --no-install-recommends \
+       wget \
+       ca-certificates \
+       krb5-locales \
+       libaio1 \
+       libcurl4 \
+       libcurl4-openssl-dev \
+       libdbd-mysql-perl \
+       libdbi-perl \
+       libev4 \
+       libgdbm-compat4 \
+       libgdbm6 \
+       libgssapi-krb5-2 \
+       libk5crypto3 \
+       libkeyutils1 \
+       libkrb5-3 \
+       libkrb5support0 \
+       libldap-2.4-2 \
+       libldap-common \
+       libmariadb3 \
+       libnghttp2-14 \
+       libperl5.28 \
+       libpopt0 \
+       librtmp1 \
+       libsasl2-2 \
+       libsasl2-modules \
+       libsasl2-modules-db \
+       libssh2-1 \
+       lsb-base \
+       mariadb-common \
+       mysql-common \
+       netbase \
+       openssl \
+       perl \
+       perl-modules-5.28 \
+       rsync \
+    && wget -q --no-check-certificate \
+    https://www.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0-7/binary/debian/buster/x86_64/percona-xtrabackup-80_8.0.7-1.buster_amd64.deb \
+    && dpkg -i percona-xtrabackup-80_8.0.7-1.buster_amd64.deb  \
+    && rm -rf *.deb \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/*
