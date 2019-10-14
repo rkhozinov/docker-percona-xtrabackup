@@ -1,0 +1,33 @@
+FROM alpine:3.10 as build
+
+ARG PERCONA_XTRABACKUP_VERSION=8.0.7
+
+RUN apk --no-cache add \ 
+    curl \
+    make \
+    cmake \
+    bison \
+    automake \
+    autoconf \
+    flex \
+    tar \
+    libtool \
+    cmake \
+    libaio-dev \
+    mysql-client \
+    zlib-dev \
+    libev-dev \
+    libcurl \
+    g++ \
+    boost-dev \
+    openssl-dev \
+    ncurses-dev \
+    curl-dev \
+    musl-dev \
+    libgcrypt-dev
+
+RUN curl -L https://github.com/percona/percona-xtrabackup/archive/percona-xtrabackup-${PERCONA_XTRABACKUP_VERSION}.tar.gz | tar xz 
+
+RUN cd percona-xtrabackup-percona-xtrabackup-${PERCONA_XTRABACKUP_VERSION} \
+    && cmake -DBUILD_CONFIG=xtrabackup_release -DWITH_MAN_PAGES=OFF -DFORCE_INSOURCE_BUILD=1 \
+    && make -j4
